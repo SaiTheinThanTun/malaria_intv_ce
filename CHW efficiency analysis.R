@@ -25,6 +25,26 @@ a[order(a$X2013,decreasing=TRUE),]
 table(rdt$Month) #comparing RDTs per month
 barplot(table(rdt$Month))
 
+###RESHAPing before analying (instead of SPLIT)
+library(reshape2)
+id_rdt <- names(rdt)
+m_rdt <- melt(rdt, id=id_rdt[-7]) #melting rdt into m_rdt
+
+dcast(m_rdt, Month ~ variable, mean) #Average RDTs per month in 2013
+mean((m_rdt$value)) #11.01737 tests per month Total average in 2013
+rdt_uniq_vs <- dcast(m_rdt, Volunteer+Source ~ variable, sum) #RDTs per Unique VHW at particular Source
+rdt_uniq_vs
+mean(rdt_uniq_vs$X2013) #RDT rate per VHW per year (this includes VHWs who're not active for the whole year)
+dcast(m_rdt, Source ~ variable, sum) #RDT per IP per year
+
+#Per IP
+cda_m_rdt <- m_rdt[m_rdt$Source=="CDA",]
+cpi_m_rdt <- m_rdt[m_rdt$Source=="CPI",]
+iom_m_rdt <- m_rdt[m_rdt$Source=="IOM",]
+mam_m_rdt <- m_rdt[m_rdt$Source=="MAM",]
+who_m_rdt <- m_rdt[m_rdt$Source=="WHO",]
+
+
 ###SPLITTING Up the data by respective variable(s)
 v_rdt <- split(rdt, rdt$Volunteer)
 s_rdt <- split(rdt, rdt$Source)
