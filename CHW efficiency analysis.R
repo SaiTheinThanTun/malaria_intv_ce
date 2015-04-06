@@ -36,9 +36,24 @@ tspVchw[tspVchw[,2]>1,] #Lists the CHWs with no. of townships they're responsibl
 
 dcast(m_rdt, Month ~ variable, mean) #Average RDTs per month in 2013
 mean((m_rdt$value)) #11.01737 tests per month Total average in 2013
-rdt_uniq_vs <- dcast(m_rdt, Volunteer+Source ~ variable, sum) #RDTs per Unique VHW at particular Source
-rdt_uniq_vs
-mean(rdt_uniq_vs$X2013) #RDT rate per VHW per year (this includes VHWs who're not active for the whole year)
+
+###Calculating RDT testing
+#Total RDT tests
+rdt_uniq_vts_total <- dcast(m_rdt, Volunteer+Township+Source ~ variable, sum) #TOTAL RDTs per Unique VHW at particular Source
+rdt_uniq_vts_total
+mean(rdt_uniq_vts_total$X2013) #RDT rate per VHW per year (this includes VHWs who're not active for the whole year)
+#Mean RDT tests
+rdt_uniq_vts_avg <- dcast(m_rdt, Volunteer+Township+Source ~ variable, mean) #Per VHW, the mean RDTs 
+#2402 (cases increased because CHWs are seperated again by townships)
+####how to handle decimal places, test can't be 0.456...
+RDTmeanOverall <- mean(rdt_uniq_vts_avg$X2013) #Average testing rate of CHWs per month is 9.409963
+hist(rdt_uniq_vts_avg$X2013, main=paste("Average RDT testing rates of CHWs per month (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
+#The histogram has a long tail and thus it is not presentable.
+#Try to cut the dataset (rdt_uniq_vts_avg) with bins
+rdt_uniq_vts_avg$f <- cut(rdt_uniq_vts_avg$X2013, c(0,10,20,30,40,50,250), labels=c("<=10","11-20","21-30","31-40","41-50",">50"))
+barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs per month \n (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
+
+
 dcast(m_rdt, Source ~ variable, sum) #RDT per IP per year
 
 #Per IP
@@ -83,7 +98,7 @@ head(v_rdt[which(test>1)]) #Arkar Soe is the first case (MAM + WHO)
 rdt[rdt$Volunteer=="Aee Nay War",]
 
 #Creating new RDT dataset with only the active (12 months active) CHW
-tmp_rdt <- vs_rdt[sapply(vs_rdt, function(x) nrow(x)>0)]
+tmp_rdt <- vs_rdt[sapply(vs_rdt, function(x) nrow(x)>0)] #2307 CHWs
 active_chw <- tmp_rdt[sapply(tmp_rdt, function(x) nrow(x)==12)] #only 249 CHW are active all year
 active_chw_test_avg <- sapply(active_chw, function(x) mean(x$X2013))
 mean(active_chw_test_avg) #14.17269 RDTs are tested per month among all months active CHWs
