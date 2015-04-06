@@ -30,6 +30,10 @@ library(reshape2)
 id_rdt <- names(rdt)
 m_rdt <- melt(rdt, id=id_rdt[-7]) #melting rdt into m_rdt
 
+tmpmelt_rdt <- melt(rdt[-7], id=id_rdt[-c(2,7)])
+tspVchw <- dcast(tmpmelt_rdt[!duplicated(tmpmelt_rdt[,c(2,7)]),], Volunteer ~ variable) #identifying which CHWs have more than 1 townships
+tspVchw[tspVchw[,2]>1,] #Lists the CHWs with no. of townships they're responsible.
+
 dcast(m_rdt, Month ~ variable, mean) #Average RDTs per month in 2013
 mean((m_rdt$value)) #11.01737 tests per month Total average in 2013
 rdt_uniq_vs <- dcast(m_rdt, Volunteer+Source ~ variable, sum) #RDTs per Unique VHW at particular Source
@@ -43,6 +47,17 @@ cpi_m_rdt <- m_rdt[m_rdt$Source=="CPI",]
 iom_m_rdt <- m_rdt[m_rdt$Source=="IOM",]
 mam_m_rdt <- m_rdt[m_rdt$Source=="MAM",]
 who_m_rdt <- m_rdt[m_rdt$Source=="WHO",]
+
+#No. of tests performed per CHW (2013)
+hist(rdt_uniq_vs$X2013, main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
+#Extremelly right-skewed histogram will obtained w/o any data cleaning
+summary(sort(rdt_uniq_vs$X2013, decreasing=TRUE))
+#Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#1.00    6.00   21.00   58.55   65.00 1454.00
+#Retrying with a limit of 100 RDTs
+hist(rdt_uniq_vs$X2013[rdt_uniq_vs$X2013<100], main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
+#Retrying by binning
+hist(rdt_uniq_vs$X2013, breaks=c(0,10,20,30,40,50,1455),main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
 
 
 ###SPLITTING Up the data by respective variable(s)
@@ -82,6 +97,8 @@ chw_active_mnth <- sapply(tmp_rdt, function(x) nrow(x))
 #Multiple lines are contributed by a single CHW.
 #Thus, it's tricky to find out how efficient a single CHW is. 
 tmp_rdt[sapply(tmp_rdt, function(x) nrow(x)>12)]
+length(names(tmp_rdt[sapply(tmp_rdt, function(x) nrow(x)>12)])) ##33 CHW with x'ple townships
+names(tmp_rdt[sapply(tmp_rdt, function(x) nrow(x)>12)]) #Names of the CHWs with x'ple townships
 
 #Example Results
 $`Su Hlaing Hnin.WHO`
