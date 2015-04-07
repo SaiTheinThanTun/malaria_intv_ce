@@ -49,7 +49,9 @@ rdt_uniq_vts_avg <- dcast(m_rdt, Volunteer+Township+Source ~ variable, mean) #Pe
 ####how to handle decimal places, test can't be 0.456...
 RDTmeanOverall <- mean(rdt_uniq_vts_avg$X2013) #Average testing rate of CHWs per month is 9.409963
 median(rdt_uniq_vts_avg$X2013) #Median testing rate of 5 is a more robust measure since there are outstanding CHWs with >200 RDTs 
-sd(rdt_uniq_vts_avg$X2013)
+#This will be the median of the mean
+
+sd(rdt_uniq_vts_avg$X2013) #15.28
 
 hist(rdt_uniq_vts_avg$X2013, main=paste("Average RDT testing rates of CHWs per month (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
 #The histogram has a long tail and thus it is not presentable.
@@ -81,6 +83,24 @@ cpi_m_rdt <- m_rdt[m_rdt$Source=="CPI",]
 iom_m_rdt <- m_rdt[m_rdt$Source=="IOM",]
 mam_m_rdt <- m_rdt[m_rdt$Source=="MAM",]
 who_m_rdt <- m_rdt[m_rdt$Source=="WHO",]
+
+#Per IP, preprocessed above for unique CHW with Volunteer name, Township and Source
+boxplot(X2013 ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs") #Boxplot comparing testing rates between IPs
+
+#Per township
+aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean) #Data cleaning needed to be done for Township names before excuting this!
+avgRDT <- rdt_uniq_vts_avg #For RESET
+#Name cleaning #This is done at a post-processed dataset
+rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Bawlakhae"] <- "Bawlakhe"
+rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Beelin"] <- "Bilin"
+rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Hpaan"] <- "Hpa-an"
+rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Kyaikhto"] <- "Kyaikto"
+rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Kyarin Seikyi"] <- "Kyainseikgyi"
+rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Mae Sae"] <- "Mese"
+rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Yae"|rdt_uniq_vts_avg$Township=="YE"] <- "Ye"
+
+#rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township==""] <- ""
+aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean)
 
 #No. of tests performed per CHW (2013)
 hist(rdt_uniq_vs$X2013, main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
