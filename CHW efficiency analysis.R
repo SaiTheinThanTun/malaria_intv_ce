@@ -9,6 +9,7 @@ dim(rdt) #12302 7
 ###Cleaning the dataset
 rdt <- rdt[rdt$Volunteer!="",] #dimension changed to 12260 7, by removing CHW with no names
 rdt$Month <- toupper(rdt$Month) #Changing the months into ALLCAPS
+
 summary(rdt$X2013) 
 #This is also accounting for inactive CHWs, where s/he may have not done any testing
 #on one of the months in 2013
@@ -47,12 +48,30 @@ rdt_uniq_vts_avg <- dcast(m_rdt, Volunteer+Township+Source ~ variable, mean) #Pe
 #2402 (cases increased because CHWs are seperated again by townships)
 ####how to handle decimal places, test can't be 0.456...
 RDTmeanOverall <- mean(rdt_uniq_vts_avg$X2013) #Average testing rate of CHWs per month is 9.409963
+median(rdt_uniq_vts_avg$X2013) #Median testing rate of 5 is a more robust measure since there are outstanding CHWs with >200 RDTs 
+sd(rdt_uniq_vts_avg$X2013)
+
 hist(rdt_uniq_vts_avg$X2013, main=paste("Average RDT testing rates of CHWs per month (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
 #The histogram has a long tail and thus it is not presentable.
 #Try to cut the dataset (rdt_uniq_vts_avg) with bins
-rdt_uniq_vts_avg$f <- cut(rdt_uniq_vts_avg$X2013, c(0,10,20,30,40,50,250), labels=c("<=10","11-20","21-30","31-40","41-50",">50"))
-barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs per month \n (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
 
+#Bins from the first report (oct 2014)
+rdt_uniq_vts_avg$f <- cut(rdt_uniq_vts_avg$X2013, c(0,10,20,30,40,50,250), labels=c("<=10","11-20","21-30","31-40","41-50",">50"))
+barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs per month \n in 2013 (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
+table(rdt_uniq_vts_avg$f)
+#<=10 11-20 21-30 31-40 41-50   >50 
+#1822   371    76    45    36    52 
+
+#experimental bins
+#base 2 bin
+rdt_uniq_vts_avg$f <- cut(rdt_uniq_vts_avg$X2013, c(0,2^(0:6)[-1],250))
+barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs per month \n in 2013 (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
+table(rdt_uniq_vts_avg$f)
+
+#0-5, 5-15, 15-35, 35-75 bins
+rdt_uniq_vts_avg$f <- cut(rdt_uniq_vts_avg$X2013, c(0,5,15,35,75,250))
+barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs per month \n in 2013 (mean=",RDTmeanOverall,")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
+table(rdt_uniq_vts_avg$f)
 
 dcast(m_rdt, Source ~ variable, sum) #RDT per IP per year
 
