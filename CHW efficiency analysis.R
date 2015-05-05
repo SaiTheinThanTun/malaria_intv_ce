@@ -77,7 +77,7 @@ table(rdt_uniq_vts_avg$f)
 
 dcast(m_rdt, Source ~ variable, sum) #RDT per IP per year
 
-#Per IP
+#Per IP #These are not utilized currently. The boxplot below is used instead.
 cda_m_rdt <- m_rdt[m_rdt$Source=="CDA",]
 cpi_m_rdt <- m_rdt[m_rdt$Source=="CPI",]
 iom_m_rdt <- m_rdt[m_rdt$Source=="IOM",]
@@ -85,7 +85,7 @@ mam_m_rdt <- m_rdt[m_rdt$Source=="MAM",]
 who_m_rdt <- m_rdt[m_rdt$Source=="WHO",]
 
 #Per IP, preprocessed above for unique CHW with Volunteer name, Township and Source
-boxplot(X2013 ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs") #Boxplot comparing testing rates between IPs
+boxplot(X2013 ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs", main="RDT rates among Implementing Partners (2013)") #Boxplot comparing testing rates between IPs
 
 #Per township
 aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean) #Data cleaning needed to be done for Township names before excuting this!
@@ -101,6 +101,8 @@ rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Yae"|rdt_uniq_vts_avg$Town
 
 #rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township==""] <- ""
 aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean)
+#plot(aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean)) #not informative
+
 
 #No. of tests performed per CHW (2013)
 hist(rdt_uniq_vs$X2013, main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
