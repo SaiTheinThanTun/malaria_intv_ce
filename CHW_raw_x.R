@@ -1,6 +1,35 @@
 setwd("~/R/")
 CHW <- read.csv("MOCRU_org//03CHWcase20150408.csv")
 
+#Creating a subset of CHW
+req_var <- c("State..Division","Township","TS_Pcode","Year","BHS.Volunteer","Volunteer", "Outcome")
+#checking if the required variables are in the dataset
+sum(names(CHW) %in% req_var)==7
+
+chw <- CHW[names(CHW) %in% req_var]
+library(reshape2)
+####To include Data Cleaning methods from Stat Holland such as "str_trim", "toupper", etc
+
+#Manually changing the case of the names. There may be a way of shortening this code using lapply, etc
+chw$State..Division <- toupper(chw$State..Division)
+chw$Township <- toupper(chw$Township)
+chw$TS_Pcode <- toupper(chw$TS_Pcode)
+chw$Volunteer <- toupper(chw$Volunteer)
+chw$Outcome <- toupper(chw$Outcome)
+
+#Summarizing
+table(chw$Township+chw$TS_Pcode, chw$Outcome)
+
+#Melting & casting
+m_chw <- melt(chw, id=req_var[1:4])
+dcast(m_chw, Township ~ variable, length)
+dcast(m_chw, Township ~ variable, value.var="BHS.Volunteer", length)
+
+m_chw2 <- melt(chw[c(1:4,6)], id=req_var[1:4])
+dcast(m_chw2, Year ~ variable, )
+table(m_chw2$value)
+
+
 #writing out summary table to edit for a codebook for data repository
 write.csv(t(summary(CHW)),"Summary_CHW.csv")
 
@@ -48,5 +77,3 @@ naPercent
 #
 hist(table(is.na(Sr)))
 
-#Creating a subset of CHW
-chw <- CHW[]
