@@ -17,8 +17,14 @@ chw$TS_Pcode <- toupper(chw$TS_Pcode)
 chw$Volunteer <- toupper(chw$Volunteer)
 chw$Outcome <- toupper(chw$Outcome)
 
+#Cleaning up Outcome variable
+chw <- chw[chw$Outcome %in% c("0",)]
+
 #Summarizing
-table(chw$Township+chw$TS_Pcode, chw$Outcome)
+table(chw$Outcome)
+table(chw$BHS.Volunteer)
+table(chw$BHS.Volunteer,chw$Outcome)
+table(chw$Township, chw$Outcome)
 
 #Melting & casting
 m_chw <- melt(chw, id=req_var[1:4])
