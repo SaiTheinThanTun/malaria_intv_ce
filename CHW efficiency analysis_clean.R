@@ -49,6 +49,20 @@ barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs
 rdt_uniq_vts_avg$f <- cut(rdt_uniq_vts_avg$X2013, c(0,2^(0:6)[-1],250))
 barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs per month \n in 2013 (median=",median(rdt_uniq_vts_avg$X2013),")",sep=""), xlab= "No. of RDTs", ylab= "No. of CHWs")
 
+#Per IP, preprocessed above for unique CHW with Volunteer name, Township and Source
+boxplot(X2013 ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs", main="RDT rates among Implementing Partners (2013)") #Boxplot comparing testing rates between IPs
+
+###SPLITTING Up the data by respective variable(s) THIS METHOD IS NOT AS GOOD AS RESHAPE2 WHERE YOU CAN IDENTIFY COMBINED KEY VARIABLES
+v_rdt <- split(rdt, rdt$Volunteer)
+s_rdt <- split(rdt, rdt$Source)
+vs_rdt <- split(rdt, list(rdt$Volunteer, rdt$Source)) #This is more accurate way of splitting the dataset
+
+#Creating new RDT dataset with only the active (12 months active) CHW
+tmp_rdt <- vs_rdt[sapply(vs_rdt, function(x) nrow(x)>0)] #2307 CHWs are active at least for 1 month
+active_chw <- tmp_rdt[sapply(tmp_rdt, function(x) nrow(x)==12)] #only 249 CHW are active ALL year round (this is different from all CHW data)
+
+
+
 #adding p-codes #if Ko Wynn Zaw can export a datafile with p_codes, this part is not necessary, but some of the codes need to be changed
 #A consideration has to be made for where to put this manipulation (at the datacleaning state initially, or after getting the unique CHWs)
 for(i in 1:nrow(rdt)){

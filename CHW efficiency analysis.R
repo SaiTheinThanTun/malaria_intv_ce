@@ -77,7 +77,7 @@ table(rdt_uniq_vts_avg$f)
 
 dcast(m_rdt, Source ~ variable, sum) #RDT per IP per year
 
-#Per IP #These are not utilized currently. The boxplot below is used instead.
+#Per IP #These are not utilized currently. The boxplot function 7 lines below is used instead.
 cda_m_rdt <- m_rdt[m_rdt$Source=="CDA",]
 cpi_m_rdt <- m_rdt[m_rdt$Source=="CPI",]
 iom_m_rdt <- m_rdt[m_rdt$Source=="IOM",]
@@ -90,7 +90,7 @@ boxplot(X2013 ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDT
 #Per township
 aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean) #Data cleaning needed to be done for Township names before excuting this!
 avgRDT <- rdt_uniq_vts_avg #For RESET
-#Name cleaning #This is done at a post-processed dataset
+#Name cleaning #This is done at a post-processed dataset. #This should be done in the initial stage.
 rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Bawlakhae"] <- "Bawlakhe"
 rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Beelin"] <- "Bilin"
 rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Hpaan"] <- "Hpa-an"
@@ -103,7 +103,8 @@ rdt_uniq_vts_avg$Township[rdt_uniq_vts_avg$Township=="Yae"|rdt_uniq_vts_avg$Town
 aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean)
 #plot(aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean)) #not informative
 
-
+#===============================================================================================================================
+###rdt_uniq_vs variable is now OBSOLETE!!!=======================SKIP THIS=======================================================
 #No. of tests performed per CHW (2013)
 hist(rdt_uniq_vs$X2013, main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
 #Extremelly right-skewed histogram will obtained w/o any data cleaning
@@ -114,9 +115,9 @@ summary(sort(rdt_uniq_vs$X2013, decreasing=TRUE))
 hist(rdt_uniq_vs$X2013[rdt_uniq_vs$X2013<100], main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
 #Retrying by binning
 hist(rdt_uniq_vs$X2013, breaks=c(0,10,20,30,40,50,1455),main="No. of tests performed per CHW (2013)", xlab="No. of tests", ylab="Total VHW")
+#====================================================================================================
 
-
-###SPLITTING Up the data by respective variable(s)
+###SPLITTING Up the data by respective variable(s). THIS METHOD IS NOT AS GOOD AS RESHAPE2 WHERE YOU CAN IDENTIFY COMBINED KEY VARIABLES
 v_rdt <- split(rdt, rdt$Volunteer)
 s_rdt <- split(rdt, rdt$Source)
 vs_rdt <- split(rdt, list(rdt$Volunteer, rdt$Source)) #This is more accurate way of splitting the dataset
@@ -142,7 +143,7 @@ rdt[rdt$Volunteer=="Aee Nay War",]
 tmp_rdt <- vs_rdt[sapply(vs_rdt, function(x) nrow(x)>0)] #2307 CHWs
 active_chw <- tmp_rdt[sapply(tmp_rdt, function(x) nrow(x)==12)] #only 249 CHW are active all year
 active_chw_test_avg <- sapply(active_chw, function(x) mean(x$X2013))
-mean(active_chw_test_avg) #14.17269 RDTs are tested per month among all months active CHWs
+mean(active_chw_test_avg) #14.17269 RDTs are tested per month among all months ACTIVE CHWs (This no. is different from all CHW data)
 summary(active_chw_test_avg) #The best one did 103 per month on Average
 
 
