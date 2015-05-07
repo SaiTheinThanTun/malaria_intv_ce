@@ -36,6 +36,12 @@ dcast(m_chw2, Year ~ variable, )
 table(m_chw2$value)
 
 
+
+###Searching for similar and possibly the same (but spelled differently) names of CHW per township
+split_chw <- split(chw, chw$Township)
+uniq_chw_perTSP <- lapply(split_chw, function(x) unique(x[5])) #This produces Volunteer as a vector in the lists
+uniq_chw_perTSP <- lapply(split_chw, function(x) x[!duplicated(x[5]),]) #This produces the whole data.frame in the lists
+
 #writing out summary table to edit for a codebook for data repository
 write.csv(t(summary(CHW)),"Summary_CHW.csv")
 
