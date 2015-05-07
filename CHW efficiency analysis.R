@@ -31,7 +31,7 @@ library(reshape2)
 id_rdt <- names(rdt)
 m_rdt <- melt(rdt, id=id_rdt[-7]) #melting rdt into m_rdt
 
-tmpmelt_rdt <- melt(rdt[-7], id=id_rdt[-c(2,7)])
+tmpmelt_rdt <- melt(rdt[-7], id=id_rdt[-c(2,7)]) #This is melting with township name as values, excluding no. of rdt tests.
 tspVchw <- dcast(tmpmelt_rdt[!duplicated(tmpmelt_rdt[,c(2,7)]),], Volunteer ~ variable) #identifying which CHWs have more than 1 townships
 tspVchw[tspVchw[,2]>1,] #Lists the CHWs with no. of townships they're responsible.
 
