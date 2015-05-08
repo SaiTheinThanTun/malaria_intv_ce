@@ -23,7 +23,7 @@ table(rdt$Month) #comparing RDTs per month
 ###RESHAPing before analying (instead of SPLIT). HOWEVER, melting doesn't change anything since the data is already in the long format
 library(reshape2)
 id_rdt <- names(rdt)
-m_rdt <- melt(rdt, id=id_rdt[-7]) #melting rdt into m_rdt
+m_rdt <- melt(rdt, id=id_rdt[-7]) #melting rdt into m_rdt. If the name at rdt[-7] is changed to variable/value, melting may not be required
 
 #this Overall monthly average may not be necessary
 dcast(m_rdt, Month ~ variable, mean) #Average RDTs per month in 2013
@@ -34,7 +34,7 @@ mean((m_rdt$value)) #11.01737 tests per month Total average in 2013
 TMrdt <- dcast(m_rdt, Township+Month ~ variable, sum) ####FURTHER ANALYSIS REQUIRED!!!
 table(TMrdt$Township) #sum(table(TMrdt$Township)>12) to check if any township is overperforming :D
 
-#Mean RDT tests
+#Mean RDT tests per CHW
 rdt_uniq_vts_avg <- dcast(m_rdt, Volunteer+Township+Source ~ variable, mean) #Per VHW, the mean RDTs 
 
 median(rdt_uniq_vts_avg$X2013) #Median testing rate of 5 is a more robust measure since there are outstanding CHWs with >200 RDTs 
@@ -51,6 +51,9 @@ barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs
 
 #Per IP, preprocessed above for unique CHW with Volunteer name, Township and Source
 boxplot(X2013 ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs", main="RDT rates among Implementing Partners (2013)") #Boxplot comparing testing rates between IPs
+
+#Per township, need to have cleaned township names 
+rdt_uniq_t_avg <- dcast(m_rdt, Township ~ variable, mean)
 
 ###SPLITTING Up the data by respective variable(s) THIS METHOD IS NOT AS GOOD AS RESHAPE2 WHERE YOU CAN IDENTIFY COMBINED KEY VARIABLES
 v_rdt <- split(rdt, rdt$Volunteer)
