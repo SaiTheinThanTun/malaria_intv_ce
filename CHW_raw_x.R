@@ -1,5 +1,5 @@
 setwd("~/R/")
-CHW <- read.csv("MOCRU_org//03CHWcase20150408.csv")
+CHW <- read.csv("MOCRU_org//03CHWcase20150408.csv") #each for specific version of csv
 CHW <- read.csv("03CHWcase20150505.csv")
 
 #Creating a subset of CHW
