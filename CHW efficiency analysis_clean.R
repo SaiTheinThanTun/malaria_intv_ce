@@ -16,6 +16,7 @@ names(rdt) %in% c("State..Division","Township","TS_Pcode", "Volunteer", "Month",
 #no. of Invalid IDs (blank Volunteer names...)
 rdt <- rdt[rdt$Volunteer!="",]
 rdt$Month <- toupper(rdt$Month) #Changing the months into ALLCAPS
+rdt$State..Division <- toupper(rdt$State..Division)
 
 #Checking months
 table(rdt$Month) #comparing RDTs per month
@@ -24,7 +25,7 @@ table(rdt$Month) #comparing RDTs per month
 library(reshape2)
 id_rdt <- names(rdt)
 m_rdt <- melt(rdt, id=id_rdt[-8]) #melting rdt into m_rdt. If the name at rdt[-7] is changed to variable/value, melting may not be required
-
+#=========================================================skip
 #this Overall monthly average may NOT be necessary
 dcast(m_rdt, Month ~ variable, mean) #Average RDTs per month in 2013
 
@@ -33,6 +34,7 @@ mean((m_rdt$value)) #11.01737 tests per month Total average in 2013
 #Township performance per month
 TMrdt <- dcast(m_rdt, Township+Month ~ variable, sum) ####FURTHER ANALYSIS REQUIRED!!!
 table(TMrdt$Township) #sum(table(TMrdt$Township)>12) to check if any township is overperforming :D
+#=========================================================end
 
 #Mean RDT tests per CHW
 rdt_uniq_vts_avg <- dcast(m_rdt, Volunteer+Township+Source ~ variable, mean) #Per VHW, the mean RDTs 
@@ -51,6 +53,10 @@ barplot(table(rdt_uniq_vts_avg$f), main=paste("Average RDT testing rates of CHWs
 
 #Per IP, preprocessed above for unique CHW with Volunteer name, Township and Source
 boxplot(No.of.Test ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs", main="RDT rates among Implementing Partners (2013)") #Boxplot comparing testing rates between IPs
+
+#Per State/Division
+rdt_uniq_state_avg <- dcast(m_rdt, State..Division+Volunteer+Township+Source ~ variable, mean) #
+boxplot(No.of.Test ~ State..Division, rdt_uniq_state_avg)
 
 #Per township, need to have cleaned township names 
 rdt_uniq_t_avg <- dcast(m_rdt, Township ~ variable, mean)
