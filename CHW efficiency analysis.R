@@ -87,7 +87,7 @@ who_m_rdt <- m_rdt[m_rdt$Source=="WHO",]
 #Per IP, preprocessed above for unique CHW with Volunteer name, Township and Source
 boxplot(X2013 ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs", main="RDT rates among Implementing Partners (2013)") #Boxplot comparing testing rates between IPs
 
-#Per township
+#Per township [WRONG APPROACH, because the input rdt_uniq_vts_avg, which is already a dcast summary on unique CHWs]
 aggregate(X2013 ~ Township, rdt_uniq_vts_avg, mean) #Data cleaning needed to be done for Township names before excuting this!
 avgRDT <- rdt_uniq_vts_avg #For RESET
 #Name cleaning #This is done at a post-processed dataset. #This should be done in the initial stage.
