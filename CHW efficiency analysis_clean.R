@@ -14,7 +14,11 @@ names(rdt) %in% c("State..Division","Township","TS_Pcode", "Volunteer", "Month",
 #if the above name check turns out to include any FALSE, there's something wrong with the dataset
 
 #no. of Invalid IDs (blank Volunteer names...)
-rdt <- rdt[rdt$Volunteer!="",]
+rdt <- rdt[rdt$Volunteer!="",] 
+#During melting
+#2393 unique CHW (not counting for blank names)
+#2398 unique CHW (inclusive of blank names)
+
 rdt$Month <- toupper(rdt$Month) #Changing the months into ALLCAPS
 rdt$State..Division <- toupper(rdt$State..Division)
 
@@ -37,7 +41,7 @@ table(TMrdt$Township) #sum(table(TMrdt$Township)>12) to check if any township is
 #=========================================================end
 
 #Mean RDT tests per CHW
-rdt_uniq_vts_avg <- dcast(m_rdt, Volunteer+Township+Source ~ variable, mean) #Per VHW, the mean RDTs 
+rdt_uniq_vts_avg <- dcast(m_rdt, Volunteer+TS_Pcode+Source ~ variable, mean) #Per VHW, the mean RDTs 
 
 median(rdt_uniq_vts_avg$No.of.Test) #Median testing rate of 5 is a more robust measure since there are outstanding CHWs with >200 RDTs 
 sd(rdt_uniq_vts_avg$No.of.Test) #15.28
@@ -56,7 +60,7 @@ boxplot(No.of.Test ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab
 
 #Per State/Division
 rdt_uniq_state_avg <- dcast(m_rdt, State..Division+Volunteer+Township+Source ~ variable, mean) #
-boxplot(No.of.Test ~ State..Division, rdt_uniq_state_avg)
+boxplot(No.of.Test ~ State..Division, rdt_uniq_state_avg, outline=FALSE, xlab="States/Divisions", ylab="RDTs", main="RDT rates among States/Divisions (2013)* to add comment+ w/o outliers+ what data")
 
 #Per township, need to have cleaned township names 
 rdt_uniq_t_avg <- dcast(m_rdt, Township ~ variable, mean)
