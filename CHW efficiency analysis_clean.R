@@ -2,6 +2,7 @@
 #The exported file (.xlsx format) has to be coverted into .csv format either by Excel or Libra's Calc
 #Converted csv file will be placed under "~/R/DataRep_reportMay2015" 
 #with the name "rdt_longfile.csv"
+#Analyzed from Access Query: qry_histogram_monthly(2013) + TS_pcode
 
 ##Cleared up version of CHW efficiency analysis
 #Setting the directory
