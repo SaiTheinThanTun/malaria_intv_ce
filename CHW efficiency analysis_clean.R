@@ -61,7 +61,7 @@ boxplot(No.of.Test ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab
 
 #Per State/Division
 rdt_uniq_state_avg <- dcast(m_rdt, State..Division+Volunteer+Township+Source ~ variable, mean) #
-boxplot(No.of.Test ~ State..Division, rdt_uniq_state_avg, outline=FALSE, xlab="States/Divisions", ylab="RDTs", main="RDT rates among States/Divisions (2013)* to add comment+ w/o outliers+ what data")
+boxplot(No.of.Test ~ State..Division, rdt_uniq_state_avg, outline=FALSE, xlab="States/Divisions", ylab="Average monthly malaria tests", main="Malaria tests done by Community Health Workers in States/Divisions in Myanmar\n2013* to add comment+ w/o outliers+ what data")
 
 #Per township, need to have cleaned township names 
 rdt_uniq_t_avg <- dcast(m_rdt, Township ~ variable, mean)
