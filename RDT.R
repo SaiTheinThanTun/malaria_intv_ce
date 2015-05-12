@@ -46,11 +46,21 @@ rdt$Outcome[rdt$Outcome %in% npf] <- "Non-Pf"
 #rdt$Outcome[rdt$Outcome %in% neg] <- "Neg"
 rdt$Outcome <- factor(rdt$Outcome)
 
+library(zoo)
+
 #by month
+trendplot <- function(rdt, type){
+  if(type=="chw"){
+    rdt <- rdt[]
+  }
+  if(type=="hf"){
+    
+  }
+}
 combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
 comb2013 <- combined[combined$Yr==2013,]
 
-library(zoo)
+
 comb2013$yrmth <- as.yearmon(paste(comb2013$Yr,comb2013$Mth), "%Y %b")
 comb2013$pf_npf <- comb2013$Pf+comb2013$`Non-Pf`
 comb2013$tested <- comb2013$Pf+comb2013$`Non-Pf`+comb2013$Neg
