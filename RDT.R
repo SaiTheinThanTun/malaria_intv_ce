@@ -8,6 +8,11 @@ npf <- c("Non-Pf","pv","Pv")
 neg <- "Neg"
 
 rdt_org <- read.csv("TC_combined.csv")
+
+#Outcome table for Tom
+ocTom <- dcast(rdt_org, Yr ~ Outcome, sum, na.rm=TRUE, value.var="Number")
+write.csv(ocTom, "outcomes.csv")
+
 #cleaning up
 rdt <- rdt_org[rdt_org$Outcome %in% c(pf,npf,neg),] #67369 12 -> 66844 12
 rdt <- rdt[rdt$Mth!="",] #66841 12
@@ -31,11 +36,31 @@ rdt$Outcome[rdt$Outcome %in% npf] <- "Non-Pf"
 #rdt$Outcome[rdt$Outcome %in% neg] <- "Neg"
 rdt$Outcome <- factor(rdt$Outcome)
 
+#by month
+combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
+comb2013 <- combined[combined$Yr==2013,]
+
+library(zoo)
+comb2013$yrmth <- as.yearmon(paste(comb2013$Yr,comb2013$Mth), "%Y %b")
+comb2013$pf_npf <- comb2013$Pf+comb2013$`Non-Pf`
+comb2013$tested <- comb2013$Pf+comb2013$`Non-Pf`+comb2013$Neg
+
+#Plotting for 2013 
+plot(comb2013$Pf ~ comb2013$yrmth, type="l")
+plot(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l")
+plot(comb2013$Neg ~ comb2013$yrmth, type="l")
+
+#plot(combined$Neg[3:38] ~ combined$yrmth[3:38], type="s")
+
+
+#testing from year 2012 to date (range is so big, better try with )
+#combined <- combined[3:38,]
+#plot(combined$Neg ~ combined$yrmth, type="l")
+
 #dcasting whole data
 dcast(rdt,Township+Yr ~ Outcome ,sum, value.var="Number")
 dcast(rdt, State_Region ~ Outcome, sum, value.var="Number")
-#by month
-dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number")
+
 
 #dcasting by CHW and HF
 rdt_s <- split(rdt, rdt$Expr1)
