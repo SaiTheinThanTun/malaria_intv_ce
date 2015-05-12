@@ -7,6 +7,11 @@ after <- read.csv("HF_20150508.csv", stringsAsFactors=FALSE) #392000 51
 
 #subsetting before
 before_sub <- before[1:392000,]
+beforeX <- before[392001:430000,]
+marc_p <- read.csv("MARC PCodes.csv")
+marc_p <- marc_p$Tsp_Code #this changes the data.frame into a vector which we can use for subsetting.
+beforeXmarc <- beforeX[beforeX$TS_Pcode %in% marc_p,]
+table(beforeXmarc$Township)
 
 difference <- NA
 for(i in 1:length(before)){
