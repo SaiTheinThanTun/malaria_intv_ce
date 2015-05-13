@@ -52,11 +52,21 @@ rdt$Outcome <- factor(rdt$Outcome)
 combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
 #comb2013 <- combined[combined$Yr==2013,]
 
-combined <- combined[,-1] #just after dcast
-tcomb <- t(combined)
+#Per Month
+tcomb <- t(combined[,-1])
 colnames(tcomb) <- tcomb[1,]
 tcomb <- tcomb[-1,]
-barplot(tcomb, col=c("cornflowerblue","orange","coral1"), border="white", legend.text=c("Negative","Non-Pf","Pf"))
+barplot(tcomb, col=c("cornflowerblue","orange","coral1"), border="white", main="Malaria Outcomes per Month\n MARC region, 2013", ylab="No. of Malaria Outcomes")
+legend("topleft",legend=c("Negative","Non-Pf","Pf"),fill=c("cornflowerblue","orange","coral1"))
+
+#percentage stacked plot per month
+
+tcomb_prop <- t(prop.table(as.matrix(combined[,3:5]),1))
+colnames(tcomb_prop) <- combined$Mth
+barplot(tcomb_prop, col=c("cornflowerblue","orange","coral1"), border="white", main="Percentage of Malaria Outcomes per Month\n MARC region, 2013", ylab="Percentage of Malaria Outcomes per Month")
+legend("bottomright",legend=c("Negative","Non-Pf","Pf"),fill=c("cornflowerblue","orange","coral1"))
+
+
 #plot(combined$Neg[3:38] ~ combined$yrmth[3:38], type="s")
 
 tcomb2 <- tcomb[-1,]
@@ -72,10 +82,10 @@ barplot(tstates)
 #percent-based stacked bars #pf npf comparison between states..divisons
 prop <- t(prop.table(as.matrix(states[,2:4]),1))
 colnames(prop) <- states$State_Region
-barplot(prop)
+barplot(prop,col=c("cornflowerblue","orange","coral1"), border="white", main="Percentage of Malaria Outcomes in different States/Divisions\n MARC region, 2013", ylab="Percentage of Malaria Outcomes per State/Division")
+legend("bottomright",legend=c("Negative","Non-Pf","Pf"),fill=c("cornflowerblue","orange","coral1"))
 
-
-#pf npf comparison between townships
+#pf npf percentage comparison between townships
 tsp <- dcast(rdt, Township ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 prop_tsp <- t(prop.table(as.matrix(tsp[,2:4]),1))
 colnames(prop_tsp) <- tsp$Township
