@@ -1,5 +1,5 @@
 #RDT testing and their results/ Positivity, etc
-#Analyzed from Access Query: qrtTC_combined
+#Analyzed from Access Query: qrtTC_combined +Type
 
 setwd("~/R/DataRep_report052015")
 
@@ -10,7 +10,8 @@ npf <- c("Non-Pf","pv","Pv")
 neg <- "Neg"
 
 #rdt_org <- read.csv("TC_combined.csv")
-rdt_org <- read.csv("TC_combined20150512.csv")
+#rdt_org <- read.csv("TC_combined20150512.csv")
+rdt_org <- read.csv("marc2013TC_combined_20150513.csv")
 
 #Changing the name of "SumOfNumber" variable into "Number"
 if(sum(names(rdt_org) %in% "SumOfNumber") >0){
@@ -31,11 +32,13 @@ rdt <- rdt[!is.na(rdt$Yr),] #46132 12
 #marc_p <- read.csv("E:\\Box Sync\\MOCRU\\Data\\MARC PCodes.csv") #Windows link
 marc_p <- read.csv("MARC PCodes.csv")
 marc_p <- marc_p$Tsp_Code #this changes the data.frame into a vector which we can use for subsetting.
-rdt <- rdt[as.character(rdt$Tsp_Code) %in% marc_p,]
+rdt <- rdt[rdt$Tsp_Code %in% marc_p,]
 
 
 library(reshape2)
 rdt$Mth <- toupper(rdt$Mth)
+rdt$State_Region <- toupper(rdt$State_Region)
+rdt$Township <- toupper(rdt$Township)
 rdt$Mth <- factor(rdt$Mth, c("JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"))
 table(rdt$Mth)
 #rdt$Outcome <- factor(rdt$Outcome)
@@ -48,36 +51,49 @@ rdt$Outcome <- factor(rdt$Outcome)
 
 library(zoo)
 
-#by month
-trendplot <- function(rdt, type){
+#STARTS OF FUNCTION
+#how to run: trendplot(rdt=rdt, type="chw"), trendplot(rdt=rdt, type="hf"), trendplot(rdt=rdt, type="all")
+trendplot <- function(rdt=rdt, type){
   if(type=="chw"){
-    rdt <- rdt[]
+    rdt <- rdt[rdt$Expr1=="CHW"|rdt$Expr1=="Village",]
+    typep <- "Community Health Worker"
+    y_limits <- c(500,2000)
   }
   if(type=="hf"){
-    
+    rdt <- rdt[rdt$Expr1=="HF",]
+    typep <- "Health Facility"
+    y_limits <- c(500,4500)
   }
+  if(type=="all") {
+    typep <- "Health facility and CHW"
+    y_limits <- c(1500,7000)
+  }
+  
+  #Run program as usual!
+  combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
+  comb2013 <- combined[combined$Yr==2013,]
+  
+  
+  comb2013$yrmth <- as.yearmon(paste(comb2013$Yr,comb2013$Mth), "%Y %b")
+  comb2013$pf_npf <- comb2013$Pf+comb2013$`Non-Pf`
+  comb2013$tested <- comb2013$Pf+comb2013$`Non-Pf`+comb2013$Neg
+  
+  #Plotting
+  png(file=paste(typep,Sys.Date(),".png",sep=""), width=960, height=960)
+  plot(comb2013$Pf ~ comb2013$yrmth, type="l", col="blue", ylim=y_limits, main=paste("Malaria incidence (",typep,")\nMARC region, 2013",sep=""), xlab="Months", ylab="No. of Malaria Cases")
+  lines(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l", col="red")
+  legend("topright", legend=c("Pf+Pmix","Non-Pf"),lty=1,col=c("blue","red"))
+  grid()
+  dev.off()
 }
-combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
-comb2013 <- combined[combined$Yr==2013,]
-
-
-comb2013$yrmth <- as.yearmon(paste(comb2013$Yr,comb2013$Mth), "%Y %b")
-comb2013$pf_npf <- comb2013$Pf+comb2013$`Non-Pf`
-comb2013$tested <- comb2013$Pf+comb2013$`Non-Pf`+comb2013$Neg
-
-#Plotting for 2013 
-plot(comb2013$Pf ~ comb2013$yrmth, type="l", col="blue", ylim=c(1500,7000), main="Malaria incidence (Health facility+CHW)\n MARC region, 2013", xlab="Months", ylab="No. of Cases")
-lines(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l", col="red")
-legend("topright", legend=c("Pf+Pmix","Non-Pf"),lty=1,col=c("blue","red"))
-grid()
+#trendplot(rdt=rdt, type="chw")+ trendplot(rdt=rdt, type="hf")+ trendplot(rdt=rdt, type="all")
 
 plot(comb2013$tested ~ comb2013$yrmth, type="l", col="purple")
-
 plot(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l")
 plot(comb2013$Neg ~ comb2013$yrmth, type="l")
 
-#plot(combined$Neg[3:38] ~ combined$yrmth[3:38], type="s")
-
+#library(RColorBrewer)
+combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
 
 #testing from year 2012 to date (range is so big, better try with )
 #combined <- combined[3:38,]
