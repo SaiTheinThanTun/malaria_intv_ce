@@ -13,6 +13,8 @@ neg <- "Neg"
 #rdt_org <- read.csv("TC_combined20150512.csv")
 rdt_org <- read.csv("marc2013TC_combined_20150513.csv")
 
+#checking names
+sum(names(rdt_org) %in% c("Expr1", "SR_Pcode","State_Region","Tsp_Code","Township","Yr","Mth", "Age_Group","Outcome","Diag_method","Number", "Source","Type"))==13
 #Changing the name of "SumOfNumber" variable into "Number"
 if(sum(names(rdt_org) %in% "SumOfNumber") >0){
   names(rdt_org)[names(rdt_org)=="SumOfNumber"] <- "Number"
