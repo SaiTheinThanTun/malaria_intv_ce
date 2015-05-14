@@ -37,7 +37,7 @@ marc_p <- marc_p$Tsp_Code #this changes the data.frame into a vector which we ca
 rdt <- rdt[rdt$Tsp_Code %in% marc_p,]
 
 
-library(reshape2)
+
 rdt$Mth <- toupper(rdt$Mth)
 rdt$State_Region <- toupper(rdt$State_Region)
 rdt$Township <- toupper(rdt$Township)
@@ -51,9 +51,10 @@ rdt$Outcome[rdt$Outcome %in% npf] <- "Non-Pf"
 #rdt$Outcome[rdt$Outcome %in% neg] <- "Neg"
 rdt$Outcome <- factor(rdt$Outcome)
 
+#Required libraries for loading the function
 library(zoo)
-
-#STARTS OF FUNCTION
+library(reshape2)
+#START OF THE FUNCTION
 #how to run: trendplot(rdt=rdt, type="chw"), trendplot(rdt=rdt, type="hf"), trendplot(rdt=rdt, type="all")
 trendplot <- function(rdt=rdt, type){
   if(type=="chw"){
