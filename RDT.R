@@ -35,13 +35,14 @@ trendplot <- function(rdt=rdt, type){
   
   #Plotting
   png(file=paste(typep,Sys.Date(),".png",sep=""), width=960, height=960)
-  plot(comb2013$Pf ~ comb2013$yrmth, type="l", col="blue", ylim=y_limits, main=paste("Malaria incidence (",typep,")\nMARC region, 2013",sep=""), xlab="Months", ylab="No. of Malaria Cases")
-  lines(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l", col="red")
-  legend("topright", legend=c("Pf+Pmix","Non-Pf"),lty=1,col=c("blue","red"))
+  plot(comb2013$Pf ~ comb2013$yrmth, type="l", col="coral1", ylim=y_limits, main=paste("Malaria incidence (",typep,")\nMARC region, 2013",sep=""), xlab="Months", ylab="No. of Malaria Cases",lwd=3)
+  lines(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l", col="orange", lwd=3)
+  legend("topright", legend=c("Pf+Pmix","Non-Pf"),lty=1, lwd=3,col=c("coral1","orange"))
   grid()
   dev.off()
 }
-#trendplot(rdt=rdt, type="chw")+ trendplot(rdt=rdt, type="hf")+ trendplot(rdt=rdt, type="all")
+trendplot(rdt=rdt, type="chw")+ trendplot(rdt=rdt, type="hf")+ trendplot(rdt=rdt, type="all")
+
 
 plot(comb2013$tested ~ comb2013$yrmth, type="l", col="purple")
 plot(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l")
