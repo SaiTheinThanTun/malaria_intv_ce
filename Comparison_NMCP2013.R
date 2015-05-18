@@ -2,6 +2,11 @@
 #No. of tests, pf, CHW, (and HF but not necessarily)
 #most codes have been taken from RDT.R.
 setwd("~/R/DataRep_report052015")
+#Setting up name vectors for Outcome
+pf <- c("Mix","pf","Pf","PF")
+npf <- c("Non-Pf","pv","Pv")
+neg <- "Neg"
+#Reading dataset
 rdt_org <- read.csv("marc2013TC_combined_20150513.csv")
 
 #checking names
@@ -65,22 +70,22 @@ library(reshape2)
 adata <- hf_chw_who
 oc <- dcast(adata,State_Region ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 oc$Total <- oc$Neg+oc$`Non-Pf`+oc$Pf
-write.csv(oc, "hf_chw_who_bystates.csv")
+write.csv(oc, paste("hf_chw_who_bystates_",Sys.Date(),".csv",sep=""))
 
 #HF+all CHW(including village summaries)+all clinics by States..Divisions
 adata <- hf_chw_all
 oc <- dcast(adata,State_Region ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 oc$Total <- oc$Neg+oc$`Non-Pf`+oc$Pf
-write.csv(oc, "hf_chw_all_bystates.csv")
+write.csv(oc, paste("hf_chw_all_bystates_",Sys.Date(),".csv", sep=""))
 
 #HF+CHW WHO data by Townships
 adata <- hf_chw_who
 oc <- dcast(adata,Township ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 oc$Total <- oc$Neg+oc$`Non-Pf`+oc$Pf
-write.csv(oc, "hf_chw_who_bytownships.csv")
+write.csv(oc, paste("hf_chw_who_bytownships_",Sys.Date(),".csv", sep=""))
 
 #HF+all CHW(including village summaries)+all clinics by Townships
 adata <- hf_chw_all
 oc <- dcast(adata,Township ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 oc$Total <- oc$Neg+oc$`Non-Pf`+oc$Pf
-write.csv(oc, "hf_chw_all_bytownships.csv")
+write.csv(oc, paste("hf_chw_all_bytownships_",Sys.Date(),".csv",sep=""))
