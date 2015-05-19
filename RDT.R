@@ -43,6 +43,9 @@ trendplot <- function(rdt=rdt, type){
 }
 trendplot(rdt=rdt, type="chw")+ trendplot(rdt=rdt, type="hf")+ trendplot(rdt=rdt, type="all")
 
+perSource2013 <- dcast(rdt, Source ~ Outcome, sum, na.rm=TRUE, value.var="Number")
+perSource2013$Total <- perSource2013$Neg+perSource2013$`Non-Pf`+perSource2013$Pf
+write.csv(perSource2013, paste("OCperSource2013_",Sys.Date(),".csv",sep=""))
 
 plot(comb2013$tested ~ comb2013$yrmth, type="l", col="purple")
 plot(comb2013$`Non-Pf` ~ comb2013$yrmth, type="l")
