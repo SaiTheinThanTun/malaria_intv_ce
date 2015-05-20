@@ -36,7 +36,7 @@ table(rdt$Month) #comparing RDTs per month
 library(reshape2)
 id_rdt <- names(rdt)
 chosen <- grep("2013|Test", id_rdt)
-m_rdt <- melt(rdt, id=chosen) #melting rdt into m_rdt. If the name at rdt[-7] is changed to variable/value, melting may not be required
+m_rdt <- melt(rdt, id=id_rdt[-chosen]) #melting rdt into m_rdt. If the name at rdt[-7] is changed to variable/value, melting may not be required
 #=========================================================skip
 #this Overall monthly average may NOT be necessary
 dcast(m_rdt, Month ~ variable, mean) #Average RDTs per month in 2013
@@ -64,11 +64,11 @@ rdt_uniq_vts_avg$f <- cut(rdt_uniq_vts_avg[,valuecol], c(0,2^(0:6)[-1],250))
 barplot(table(rdt_uniq_vts_avg$f), main=paste("Average malaria testing rates of \nCommunity Health Workers per month  in 2013 \n(median=",round(median_avgtest,1),")",sep=""), xlab= "No. of malaria tests", ylab= "No. of Community Health Workers")
 
 #Per IP, preprocessed above for unique CHW with Volunteer name, Township and Source
-boxplot(No.of.Test ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs", main="RDT rates among Implementing Partners (2013)") #Boxplot comparing testing rates between IPs
+boxplot(rdt_uniq_vts_avg[,valuecol] ~ Source,rdt_uniq_vts_avg, xlab="Implementing partners", ylab="RDTs", main="RDT rates among Implementing Partners (2013)") #Boxplot comparing testing rates between IPs
 
 #Per State/Division
 rdt_uniq_state_avg <- dcast(m_rdt, State..Division+Volunteer+Township+Source ~ variable, mean) #
-boxplot(No.of.Test ~ State..Division, rdt_uniq_state_avg, outline=FALSE, xlab="States/Divisions", ylab="Average monthly malaria tests", main="Malaria tests done by Community Health Workers in States/Divisions in Myanmar\n2013* to add comment+ w/o outliers+ what data")
+boxplot(rdt_uniq_vts_avg[,valuecol] ~ State..Division, rdt_uniq_state_avg, outline=FALSE, xlab="States/Divisions", ylab="Average monthly malaria tests", main="Malaria tests done by Community Health Workers in States/Divisions in Myanmar\n2013* to add comment+ w/o outliers+ what data")
 
 #Per township, need to have cleaned township names 
 rdt_uniq_t_avg <- dcast(m_rdt, Township ~ variable, mean)
