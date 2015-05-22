@@ -10,7 +10,11 @@ setwd("~/R/DataRep_report052015")
 #Reading the file
 #rdt <- read.csv("rdt_longfile.csv")
 #rdt <- read.csv("qry_Histogram_2013_STTT_20150513.csv") #This file has all records. need to subset MARC, year
-rdt <- read.csv("qry_Histogram_2013_STTT_18-5-2015.csv") 
+#notes on 20150521: 1825/14797 12% blanks in Volunteer names in 20150513file
+#but              : 5550/11035 50% blanks in 20150521file
+
+#rdt <- read.csv("qry_Histogram_2013_STTT_18-5-2015.csv") 
+rdt <- read.csv("qry_Histogram_2013_STTT.csv")
 #MARC subsetted already, but there're COV, LC, SC values in BHS.Volunteer (type) in IOM data
 
 #checking variable names
