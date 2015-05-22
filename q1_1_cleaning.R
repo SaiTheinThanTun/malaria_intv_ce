@@ -30,6 +30,8 @@ rdt <- rdt[rdt$Mth!="",] #removing records with no month information
 rdt <- rdt[rdt$Yr=="2013",] #subsetting for 2013
 rdt <- rdt[rdt$Type %in% type2include,]
 
+rdt$Mth[rdt$Mth=="April"] <- "Apr"#This will be removed when Wynn has cleaned the month
+
 #Standardizing
 rdt$Mth <- toupper(rdt$Mth)
 rdt$Mth <- factor(rdt$Mth, c("JAN","FEB","MAR","APR","MAY","JUN","JUL","AUG","SEP","OCT","NOV","DEC"))

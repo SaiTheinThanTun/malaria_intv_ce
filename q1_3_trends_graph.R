@@ -8,7 +8,7 @@ trendplot <- function(rdt=rdt, type){
   if(type=="chw"){
     rdt <- rdt[rdt$Expr1=="CHW"|rdt$Expr1=="Village",]
     typep <- "Community Health Worker"
-    y_limits <- c(500,2000)
+    y_limits <- c(500,3000)
   }
   if(type=="hf"){
     rdt <- rdt[rdt$Expr1=="HF",]
