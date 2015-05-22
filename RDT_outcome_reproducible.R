@@ -1,5 +1,6 @@
+#q1_1_cleaning
 #Files need to be present in the working directory:
-#1. marc2013TC_combined_20150518.csv
+#1. Q1_All.csv
 #2. MARC PCodes.csv #https://app.box.com/s/4jwka23zsbsukxtng1c8t6jq9vpxayy1
 
 #RDT testing and their results/ Positivity, etc
@@ -12,10 +13,10 @@ npf <- c("Non-Pf","pv","Pv")
 neg <- "Neg"
 type2include <- c("Clinic","HF","Volunteer") #There's no Mobile and Screening points in 2013 data
 
-rdt <- read.csv("marc2013TC_combined_20150518.csv")
+rdt <- read.csv("marc2013TC_combined_20150522.csv")
 
 #checking names
-sum(names(rdt) %in% c("Expr1", "SR_Pcode","State_Region","Tsp_Code","Township","Yr","Mth", "Age_Group","Outcome","Diag_method","Number", "Source","Type"))==13
+sum(names(rdt) %in% c("Expr1", "SR_Pcode","State_Region","Tsp_Code","Township","Yr","Mth", "Age_Group", "Gender", "Outcome","Diag_method","Number", "Source","Type"))==14
 #Changing the name of "SumOfNumber" variable into "Number"
 if(sum(names(rdt) %in% "SumOfNumber") >0){
   names(rdt)[names(rdt)=="SumOfNumber"] <- "Number"
