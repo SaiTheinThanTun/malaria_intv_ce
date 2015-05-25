@@ -1,4 +1,5 @@
 #q1_2_table.R
+library(reshape2)
 #Per Source (IP)
 perSource2013 <- dcast(rdt, Source ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 perSource2013$Total <- perSource2013$Neg+perSource2013$`Non-Pf`+perSource2013$Pf

@@ -45,3 +45,7 @@ rdt$Outcome[rdt$Outcome %in% pf] <- "Pf"
 rdt$Outcome[rdt$Outcome %in% npf] <- "Non-Pf"
 #rdt$Outcome[rdt$Outcome %in% neg] <- "Neg"
 rdt$Outcome <- factor(rdt$Outcome)
+
+#Recoding IP names
+levels(rdt$Source)[levels(rdt$Source)=="WHO"] <- "WHO/NMCP"
+levels(rdt$Source)[levels(rdt$Source)=="NMCP"] <- "BHS"
