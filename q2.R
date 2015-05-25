@@ -1,8 +1,10 @@
 q2 <- read.csv("Q2.csv")
 
 q2$Month[q2$Month=="April"] <- "Apr" #remove after being cleaned
+q2$Month[q2$Month=="July"] <- "Jul"
 
 #Subsetting for 2013 MARC, #and outcomes
+q2 <- q2[q2$Year=="2013",]
 marc_p <- readLines("MARC PCodes.csv")
 q2 <- q2[q2$TS_Pcode %in% marc_p[-1],]
 q2 <- q2[q2$Volunteer.Villages!="",]
@@ -27,7 +29,7 @@ q2$MaxOfState..Division <- toupper(q2$MaxOfState..Division)
 
 library(reshape2)
 
-m_q2 <- melt(q2, names(q2)[-9])
+m_q2 <- melt(q2, names(q2)[-9]) #To place "CountOfOutcome" as value
 #uniq_villages <- dcast(q2, Volunteer.Villages+TS_Pcode+Source ~ Outcome, mean, na.rm=TRUE, value.var="CountOfOutcome")
 uniq_villages <- dcast(m_q2, MaxOfState..Division+MaxOfTownship+TS_Pcode+Volunteer.Villages+Source ~ variable, mean, na.rm=TRUE)
 med_rdt <- median(uniq_villages$CountOfOutcome) #4.75
@@ -60,3 +62,7 @@ dev.off()
 png(file=paste("boxplot_states_",Sys.Date(),".png",sep=""), width=640)
 boxplot(CountOfOutcome ~ MaxOfState..Division,uniq_villages, xlab="States/Regions", ylab="Malaria tests", main="Malaria testing rates \n across States and Regions \n MARC area (2013)", outline=FALSE, cex.names=.8) 
 dev.off()
+
+#per Township, table #Assuming that each village has a volunteer
+chw_tsp <- table(uniq_villages$MaxOfTownship)
+write.csv(chw_tsp, paste("CHW_count_tsp_",Sys.Date(),".csv",sep=""))
