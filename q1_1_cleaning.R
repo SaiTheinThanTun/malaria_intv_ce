@@ -1,4 +1,5 @@
 #q1_1_cleaning
+#to include xtab tsp x ip, and add instructions for setting up working directory
 #Files need to be present in the working directory:
 #1. Q1_All.csv
 #2. MARC PCodes.csv #https://app.box.com/s/4jwka23zsbsukxtng1c8t6jq9vpxayy1

@@ -14,3 +14,11 @@ write.csv(perTsp2013, paste("OCperTsp2013_",Sys.Date(),".csv",sep=""))
 perStates2013 <- dcast(rdt, State_Region ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 perStates2013$Total <- perStates2013$Neg+perStates2013$`Non-Pf`+perStates2013$Pf
 write.csv(perStates2013, paste("OCperStates2013_",Sys.Date(),".csv",sep=""))
+
+#Townships vs IP
+tsp_ip_totaltests <- dcast(rdt, Tsp_Code+Township ~ Source, sum, na.rm=TRUE, value.var="Number")
+write.csv(tsp_ip_totaltests, paste("Townships_IP_TotalTests_", Sys.Date(),".csv",sep=""))
+rdt_tmp <- rdt[rdt$Outcome=="Pf",]
+tsp_ip_pf <- dcast(rdt_tmp, Tsp_Code+Township ~ Source, sum, na.rm=TRUE, value.var="Number")
+write.csv(tsp_ip_pf, paste("Townships_IP_Pf_", Sys.Date(),".csv",sep=""))
+rdt_tmp <- NULL

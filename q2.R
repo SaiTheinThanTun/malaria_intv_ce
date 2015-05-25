@@ -36,19 +36,27 @@ mean_rdt <- mean(uniq_villages$CountOfOutcome) #8.28854
 #Normal graph
 uniq_villages$f <- cut(uniq_villages$CountOfOutcome, c(0,10,20,30,40,50,250), labels=c("<=10","11-20","21-30","31-40","41-50",">50"))
 png(file=paste("chw_hist_normal_",Sys.Date(),".png",sep=""))
-barplot(table(uniq_villages$f), main=paste("Average malaria testing rates of \nCommunity Health Workers per month in 2013 \n(median=",round(med_rdt,1),")",sep=""), xlab= "No. of malaria tests", ylab= "No. of Community Health Workers")
+barplot(table(uniq_villages$f), main=paste("Average malaria testing rates of \nCommunity Health Workers per month in MARC area, 2013 \n(median=",round(med_rdt,1),")",sep=""), xlab= "No. of malaria tests", ylab= "No. of Community Health Workers")
 dev.off()
 
 #base2 graph
 uniq_villages$f <- cut(uniq_villages$CountOfOutcome, c(0,2^(0:6)[-1],250), labels=c("<=2","3-4","5-8","9-16","17-32","33-64",">64"))
 png(file=paste("chw_hist_base2_",Sys.Date(),".png",sep=""))
-barplot(table(uniq_villages$f), main=paste("Average malaria testing rates of \nCommunity Health Workers per month in 2013 \n(median=",round(med_rdt,1),")",sep=""), xlab= "No. of malaria tests", ylab= "No. of Community Health Workers")
+barplot(table(uniq_villages$f), main=paste("Average malaria testing rates of \nCommunity Health Workers per month in MARC area, 2013 \n(median=",round(med_rdt,1),")",sep=""), xlab= "No. of malaria tests", ylab= "No. of Community Health Workers")
 dev.off()
 
 #per IP, boxplot
 png(file=paste("boxplot_IP_outliers_",Sys.Date(),".png",sep=""))
-boxplot(CountOfOutcome ~ Source,uniq_villages, xlab="Implementing partners", ylab="Malaria tests", main="Malaria testing rates \n among Implementing Partners (2013)") 
+boxplot(CountOfOutcome ~ Source,uniq_villages, xlab="Implementing partners", ylab="Malaria tests", main="Malaria testing rates \n among Implementing Partners, MARC area (2013)") 
 dev.off()
 png(file=paste("boxplot_IP_",Sys.Date(),".png",sep=""))
-boxplot(CountOfOutcome ~ Source,uniq_villages, outline=FALSE, xlab="Implementing partners", ylab="Malaria tests", main="Malaria testing rates \n among Implementing Partners (2013)") 
+boxplot(CountOfOutcome ~ Source,uniq_villages, outline=FALSE, xlab="Implementing partners", ylab="Malaria tests", main="Malaria testing rates \n among Implementing Partners, MARC area (2013)") 
+dev.off()
+
+#per State/Division, boxplot
+png(file=paste("boxplot_states_outliers_",Sys.Date(),".png",sep=""), width=640)
+boxplot(CountOfOutcome ~ MaxOfState..Division,uniq_villages, xlab="States/Regions", ylab="Malaria tests", main="Malaria testing rates \n across States and Regions \n MARC area (2013)", cex.names=.8) 
+dev.off()
+png(file=paste("boxplot_states_",Sys.Date(),".png",sep=""), width=640)
+boxplot(CountOfOutcome ~ MaxOfState..Division,uniq_villages, xlab="States/Regions", ylab="Malaria tests", main="Malaria testing rates \n across States and Regions \n MARC area (2013)", outline=FALSE, cex.names=.8) 
 dev.off()
