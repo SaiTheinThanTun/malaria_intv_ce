@@ -39,3 +39,26 @@ barplot(prop,col=c("cornflowerblue","orange","coral1"), border="white", main="Pe
 legend("bottomright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"))
 dev.off()
 
+#pf npf comparison between townships
+tsp <- dcast(rdt, Township ~ Outcome, sum, na.rm=TRUE, value.var="Number") 
+tsp <- tsp[order(tsp$Neg+tsp$`Non-Pf`+tsp$Pf, decreasing=TRUE),]
+ttsp <- t(tsp)
+colnames(ttsp) <- tsp$Township
+ttsp <- ttsp[-1,]
+png(file=paste("stacked_oc_tsp_",Sys.Date(),".png",sep=""), width=1000, height=800)
+par(mar=c(8,6,4,2))
+barplot(ttsp, col=c("cornflowerblue","orange","coral1"), border="white", main="Malaria Outcomes per Township\n in MARC region, 2013", ylab="No. of Malaria Outcomes", las=2, cex.names=.8, mgp=c(4,1,0))
+legend("topright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"), horiz=TRUE)
+dev.off()
+
+#pf npf percentage comparison between townships
+tsp <- dcast(rdt, Township ~ Outcome, sum, na.rm=TRUE, value.var="Number")
+prop_tsp <- t(prop.table(as.matrix(tsp[,2:4]),1))
+colnames(prop_tsp) <- tsp$Township
+prop_tsp_df <- as.data.frame(prop_tsp)
+
+png(file=paste("stacked_oc_tsp_percent_",Sys.Date(),".png",sep=""), width=1000, height=500)
+par(mar=c(8,4,4,2))
+barplot(as.matrix(prop_tsp_df), cex.names=.8, las=2, col=c("cornflowerblue","orange","coral1"), border="white", main="Percentage of Malaria Outcomes in different Townships\n MARC region, 2013", ylab="Percentage of Malaria Outcomes per Township")
+legend("bottomright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"))
+dev.off()

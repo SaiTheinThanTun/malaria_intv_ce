@@ -56,9 +56,11 @@ prop_tsp1 <- prop_tsp_df[,1:10]
 prop_tsp2 <- prop_tsp_df[,11:20]
 prop_tsp3 <- prop_tsp_df[,21:30]
 prop_tsp4 <- prop_tsp_df[,31:40]
-prop_tsp5 <- prop_tsp_df[,41:55]
+prop_tsp5 <- prop_tsp_df[,41:52]
 
 #par(mfrow=c(2,1))
+barplot(as.matrix(prop_tsp1), cex.names=.5, las=2, col=c("cornflowerblue","orange","coral1"), border="white", main="Percentage of Malaria Outcomes in different Townships\n MARC region, 2013", ylab="Percentage of Malaria Outcomes per Township")
+
 barplot(as.matrix(prop_tsp1), cex.names=.5)
 barplot(as.matrix(prop_tsp2), cex.names=.5)
 barplot(as.matrix(prop_tsp3), cex.names=.5)
