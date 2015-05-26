@@ -1,9 +1,27 @@
-#q1_1_cleaning
-#to include xtab tsp x ip, and add instructions for setting up working directory
-#Files need to be present in the working directory:
-#1. Q1.csv
-#2. MARC PCodes.csv #https://app.box.com/s/4jwka23zsbsukxtng1c8t6jq9vpxayy1
+getwd() #Check out your working directory by getwd() command. 
+#Copy the following files into the working directory:
+#1. Q1.csv #Query 1 produced from Access, and then converted to CSV
+#2. MARC PCodes.csv ##Link: https://app.box.com/s/4jwka23zsbsukxtng1c8t6jq9vpxayy1
 
+#The outputs will also be produced in the same directory.
+#Outputs are for 2013 MARC area: 
+#1. Table1: Outcomes per IP
+#2. Table2: Outcomes per States, Regions
+#3. Table3: Outcomes per Townships
+#4. Table4: Xtab Townships against IP (Total tests)
+#5. Table5: Xtab Townships against IP (Pf+Pmix)
+#6. Plot1: Malaria incidence (CHW)
+#7. Plot2: Malaria incidence (Health Facility)
+#8. Plot3: Malaria incidence (CHW + Health Facility)
+#9. Plot4: Stacked Outcome plot per month
+#10. Plot5: Percentage Stacked Outcome plot per month
+#11. Plot6: Stacked Outcome plot per States/Regions
+#12. Plot7: Percentage Stacked Outcome plot per States/Regions
+#13. Plot8: Stacked Outcome plot per Township
+#14. Plot9: Percentage Stacked Outcome plot per Township
+
+
+#q1_1_cleaning
 #Setting up name vectors for Outcome & Type categories
 pf <- c("Mix","pf","Pf","PF")
 npf <- c("Non-Pf","pv","Pv")

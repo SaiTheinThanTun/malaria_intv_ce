@@ -4,7 +4,7 @@ library(reshape2)
 combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
 #comb2013 <- combined[combined$Yr==2013,]
 
-#Per Month
+#9. Plot4: Stacked Outcome plot per month
 tcomb <- t(combined[,-1])
 colnames(tcomb) <- tcomb[1,]
 tcomb <- tcomb[-1,]
@@ -13,7 +13,7 @@ barplot(tcomb, col=c("cornflowerblue","orange","coral1"), border="white", main="
 legend("topleft",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"), horiz=TRUE)
 dev.off()
 
-#percentage stacked plot per month
+#10. Plot5: Percentage Stacked Outcome plot per month
 tcomb_prop <- t(prop.table(as.matrix(combined[,3:5]),1))
 colnames(tcomb_prop) <- combined$Mth
 png(file=paste("stacked_oc_mnth_percent_",Sys.Date(),".png",sep=""), width=850, height=480)
@@ -21,6 +21,7 @@ barplot(tcomb_prop, col=c("cornflowerblue","orange","coral1"), border="white", m
 legend("bottomright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"))
 dev.off()
 
+#11. Plot6: Stacked Outcome plot per States/Regions
 #pf npf comparison between states..divisons
 states <- dcast(rdt, State_Region ~ Outcome, sum, na.rm=TRUE, value.var="Number") 
 tstates <- t(states)
@@ -31,7 +32,8 @@ barplot(tstates, col=c("cornflowerblue","orange","coral1"), border="white", main
 legend("topleft",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"), horiz=TRUE)
 dev.off()
 
-#percent-based stacked bars #pf npf comparison between states..divisons
+#12. Plot7: Percentage Stacked Outcome plot per States/Regions
+#pf npf comparison between states..divisons
 prop <- t(prop.table(as.matrix(states[,2:4]),1))
 colnames(prop) <- states$State_Region
 png(file=paste("stacked_oc_states_percent_",Sys.Date(),".png",sep=""), width=850, height=480)
@@ -39,6 +41,7 @@ barplot(prop,col=c("cornflowerblue","orange","coral1"), border="white", main="Pe
 legend("bottomright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"))
 dev.off()
 
+#13. Plot8: Stacked Outcome plot per Township
 #pf npf comparison between townships
 tsp <- dcast(rdt, Township ~ Outcome, sum, na.rm=TRUE, value.var="Number") 
 tsp <- tsp[order(tsp$Neg+tsp$`Non-Pf`+tsp$Pf, decreasing=TRUE),]
@@ -51,6 +54,7 @@ barplot(ttsp, col=c("cornflowerblue","orange","coral1"), border="white", main="M
 legend("topright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"), horiz=TRUE)
 dev.off()
 
+#14. Plot9: Percentage Stacked Outcome plot per Township
 #pf npf percentage comparison between townships
 tsp <- dcast(rdt, Township ~ Outcome, sum, na.rm=TRUE, value.var="Number")
 prop_tsp <- t(prop.table(as.matrix(tsp[,2:4]),1))
