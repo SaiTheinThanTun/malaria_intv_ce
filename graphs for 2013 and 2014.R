@@ -97,8 +97,11 @@ trendplot(rdt=rdt, type="chw")+ trendplot(rdt=rdt, type="hf")+ trendplot(rdt=rdt
 
 
 combined <- dcast(rdt, Yr+Mth ~ Outcome, sum, na.rm=TRUE, value.var="Number") #To graph testing per month graphs
+combined[,1] <- as.yearmon(paste(combined$Yr,combined$Mth), "%Y %b")
+combined <- combined[,-2]
+YearMonth <- combined$Yr
 #9. Plot4: Stacked Outcome plot per month
-tcomb <- t(combined[,-1])
+tcomb <- t(combined)
 colnames(tcomb) <- tcomb[1,]
 tcomb <- tcomb[-1,]
 png(file=paste("stacked_oc_mnth_",Sys.Date(),".png",sep=""), width=850, height=480)
@@ -107,8 +110,8 @@ legend("topleft",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue"
 dev.off()
 
 #10. Plot5: Percentage Stacked Outcome plot per month
-tcomb_prop <- t(prop.table(as.matrix(combined[,3:5]),1))
-colnames(tcomb_prop) <- combined$Mth
+tcomb_prop <- t(prop.table(as.matrix(combined[,2:4]),1))
+colnames(tcomb_prop) <- as.character(YearMonth)
 png(file=paste("stacked_oc_mnth_percent_",Sys.Date(),".png",sep=""), width=850, height=480)
 barplot(tcomb_prop, col=c("cornflowerblue","orange","coral1"), border="white", main="Percentage of Malaria Outcomes per Month\n MARC region, 2013 and 2014", ylab="Percentage of Malaria Outcomes per Month")
 legend("bottomright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"))
