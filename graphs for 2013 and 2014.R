@@ -117,3 +117,7 @@ png(file=paste("stacked_oc_mnth_percent_",Sys.Date(),".png",sep=""), width=850, 
 barplot(tcomb_prop, col=c("cornflowerblue","orange","coral1"), border="white", main="Percentage of Malaria Outcomes per Month\n MARC region, 2013 and 2014", ylab="Percentage of Malaria Outcomes per Month")
 legend("bottomright",legend=c("Negative","Non-Pf","Pf+Pmix"),fill=c("cornflowerblue","orange","coral1"))
 dev.off()
+
+#barplot of difference between Pf cases and Non-Pf cases
+combined$dif <- combined$Pf-combined$`Non-Pf`
+barplot(combined$dif, names.arg=combined$Yr)
