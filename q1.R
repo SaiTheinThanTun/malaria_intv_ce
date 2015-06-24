@@ -1,5 +1,6 @@
-getwd() #Check out your working directory by getwd() command. 
-#Copy the following files into the working directory:
+setwd("C:/WorkingDirectoryName") #The name and path can be anywhere in your computer
+#another example: setwd("C:/Users/Sai Thein Than Tun/Documents/R Working Directory")
+#Copy the following files into your working directory:
 #1. Q1.csv #Query 1 produced from Access, and then converted to CSV
 #2. MARC PCodes.csv ##Link: https://app.box.com/s/4jwka23zsbsukxtng1c8t6jq9vpxayy1
 

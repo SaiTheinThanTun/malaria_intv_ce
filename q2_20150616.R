@@ -17,13 +17,14 @@ setwd("C:/WorkingDirectoryName") #The name and path can be anywhere in your comp
 
 
 
-q2 <- read.csv("Q2.csv")
+#q2 <- read.csv("Q2.csv")
+q2 <- read.csv("query2_2014_CHW_combine_15062015_draft.csv")
 
 q2$Month[q2$Month=="April"] <- "Apr" #remove after being cleaned
 q2$Month[q2$Month=="July"] <- "Jul"
 
 #Subsetting for 2013 MARC, #and outcomes
-q2 <- q2[q2$Year=="2013",]
+q2 <- q2[q2$Year=="2014",]
 marc_p <- readLines("MARC PCodes.csv")
 q2 <- q2[q2$TS_Pcode %in% marc_p[-1],]
 q2 <- q2[q2$Volunteer.Villages!="",]
@@ -37,7 +38,7 @@ q2 <- q2[q2$Volunteer.Villages!="",]
 #q2$Outcome[q2$Outcome %in% npf] <- "Non-Pf"
 #q2$Outcome[q2$Outcome %in% neg] <- "Neg"
 #q2$Outcome <- factor(q2$Outcome)
-q2 <- q2[,-9] #dropping the outcome categories
+q2 <- q2[,-c(9,13)] #dropping the outcome categories
 
 
 #Standardizing
