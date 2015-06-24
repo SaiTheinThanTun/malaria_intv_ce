@@ -8,7 +8,7 @@ rdt <- rbind(q1x2013,q1x2014)
 
 #COPIED from q1_20150619_STTT.R
 pf <- c("Mix","pf","Pf","PF")
-npf <- c("Non-Pf","pv","Pv")
+npf <- c("Non-Pf","pv","Pv", "Npf", "NPf")
 neg <- "Neg"
 type2include <- c("Clinic","HF","Volunteer") #There's no Mobile and Screening points in 2013 data
 
@@ -57,6 +57,7 @@ rdt$Outcome <- factor(rdt$Outcome)
 levels(rdt$Source)[levels(rdt$Source)=="WHO"] <- "WHO/NMCP"
 levels(rdt$Source)[levels(rdt$Source)=="NMCP"] <- "BHS"
 
+#rdt <- rdt[rdt$Source %in% c("WHO/NMCP","BHS"),] #Switch for subsetting only "WHO/NMCP" & "BHS"
 #q1_2_table.R
 library(reshape2)
 library(zoo)
